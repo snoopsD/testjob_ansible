@@ -1,0 +1,6 @@
+# Sample file for credentials
+# Add terraform.tfvars to .gitignore !!!
+
+aws_access_key="enter AWS access key here"
+aws_secret_key="enter AWS secret key here"
+
