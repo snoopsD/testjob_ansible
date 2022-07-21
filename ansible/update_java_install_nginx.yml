@@ -26,8 +26,15 @@
       state: present
       regexp: '^JAVA_HOME'
       line: 'JAVA_HOME=/opt/jdk-17.0.2/'
-    environment:    
-      PATH: /opt/jdk-17.0.2/bin:{{ ansible_env.PATH }}
+        #environment:    
+        #PATH: /opt/jdk-17.0.2/bin:{{ ansible_env.PATH }}
+
+  - name: Set JAVA variables
+    lineinfile:
+      dest: /etc/environment
+      state: present
+      regexp: 'jdk'
+      line: "PATH={{ ansible_env.PATH }}:/opt/jdk-17.0.2/bin"
 
   - name: Install NGINX
     yum:
