@@ -1,42 +1,56 @@
 --- 
 - name: Update JDK/Install NGINX 
   hosts: rhel
+  become: true
 
-  environment:
-    JAVA_HOME: /opt/jdk-17.0.2
-    PATH: "$PATH:$JAVA_HOME/bin"
-  
   tasks: 
   - name: Unistall jdk
-    become: true
     yum: 
       name: java
       state: absent
 
-- name: Install openJDK17
-  hosts: rhel
-
-  tasks: 
-  - name: install openjdk17
-
+  - name: Install openJDK17
     get_url: 
       dest: /tmp/openjdk-17.0.2_linux-x64_bin.tar.gz
       url: "https://download.java.net/java/GA/jdk17.0.2/dfd4a8d0985749f896bed50d7138ee7f/8/GPL/openjdk-17.0.2_linux-x64_bin.tar.gz"
 
   - name: Unarchive/install
-
     unarchive: 
       src: /tmp/openjdk-17.0.2_linux-x64_bin.tar.gz
       dest: /opt/
       remote_src: yes
 
   - name: Set JAVA variables
-    become: true
     lineinfile:
       dest: /etc/environment
       state: present
       regexp: '^JAVA_HOME'
       line: 'JAVA_HOME=/opt/jdk-17.0.2/'
+    environment:    
+      PATH: /opt/jdk-17.0.2/bin:{{ ansible_env.PATH }}
+
+  - name: Install NGINX
+    yum:
+      name: nginx
+      state: latest
+
+  - name: Find my public ip
+    uri: 
+      url: http://ifconfig.me/ip
+      return_content: yes
+    register: ip_response
+
+  - name: Add public ip to index.html
+    copy:
+      content: "{{ ip_response.content }}"
+      dest: /usr/share/nginx/html/index.html
+
+  - name: Start NGINX
+    service:
+      name: nginx
+      state: started
+
+
 
 
 

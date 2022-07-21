@@ -2,6 +2,6 @@ all:
  hosts:
    rhel:
     ansible_port: 22
-    ansible_host: 54.163.38.244
+    ansible_host: 44.201.244.66
     ansible_user: ec2-user
     ansible_ssh_private_key_file: ~/testjob_ansible/ssh_keys/ansible_key
