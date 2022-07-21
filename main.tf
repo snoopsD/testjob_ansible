@@ -21,13 +21,13 @@ resource "aws_instance" "redhat_server" {
 
   provisioner "file" {
     source      = "install_jdk1_8.sh"
-    destination = "/tmp/instal_jdk1_8.sh"
+    destination = "/tmp/install_jdk1_8.sh"
   }
 
   provisioner "remote-exec" {
     inline = [
-      "chmod +x /tmp/instal_jdk1_8.sh",
-      "/tmp/script.sh",
+      "chmod +x /tmp/install_jdk1_8.sh",
+      "/tmp/install_jdk1_8.sh",
     ]
   }
   tags = {

@@ -1,0 +1,42 @@
+--- 
+- name: Update JDK/Install NGINX 
+  hosts: rhel
+
+  environment:
+    JAVA_HOME: /opt/jdk-17.0.2
+    PATH: "$PATH:$JAVA_HOME/bin"
+  
+  tasks: 
+  - name: Unistall jdk
+    become: true
+    yum: 
+      name: java
+      state: absent
+
+- name: Install openJDK17
+  hosts: rhel
+
+  tasks: 
+  - name: install openjdk17
+
+    get_url: 
+      dest: /tmp/openjdk-17.0.2_linux-x64_bin.tar.gz
+      url: "https://download.java.net/java/GA/jdk17.0.2/dfd4a8d0985749f896bed50d7138ee7f/8/GPL/openjdk-17.0.2_linux-x64_bin.tar.gz"
+
+  - name: Unarchive/install
+
+    unarchive: 
+      src: /tmp/openjdk-17.0.2_linux-x64_bin.tar.gz
+      dest: /opt/
+      remote_src: yes
+
+  - name: Set JAVA variables
+    become: true
+    lineinfile:
+      dest: /etc/environment
+      state: present
+      regexp: '^JAVA_HOME'
+      line: 'JAVA_HOME=/opt/jdk-17.0.2/'
+
+
+
