@@ -8,11 +8,10 @@
 4) Раздать данный файл через nginx.
 
 Клонируем репозиторий.
-Генерируем ключи сами: ssh-кеygen -f ssh-keys/ansible_key -t 4096
-Создаем файл terraform.tfvars(копируем terraform.tfvars.sample), заполняем секреты от aws аккаунта
-Запускаем terraform apply. После того, как инфраструктура готова, можно зайти на инстанс и проверить версию java
-В ansible/hosts прописываем ip адрес инстанса и запускаем playbook 
-update_java_install_nginx.yml
+Генерируем ключи сами: ssh-кеygen -f ssh-keys/ansible_key -t rsa
+Создаем файл terraform.tfvars(копируем terraform.tfvars.sample), заполняем секреты от aws аккаунта.
+Запускаем terraform apply. После того, как инфраструктура готова, можно зайти на инстанс и проверить версию java.
+В ansible/hosts прописываем ip адрес инстанса и запускаем playbook update_java_install_nginx.yml
 Когда плейбук отработал, заходим на инстанс и проверяем:
 java -version
 curl localhost
