@@ -9,5 +9,12 @@
 
 Клонируем репозиторий.
 Генерируем ключи сами: ssh-кеygen -f ssh-keys/ansible_key -t 4096
-В файле te
-Запускаем terraform apply. 
+Создаем файл terraform.tfvars(копируем terraform.tfvars.sample), заполняем секреты от aws аккаунта
+Запускаем terraform apply. После того, как инфраструктура готова, можно зайти на инстанс и проверить версию java
+В ansible/hosts прописываем ip адрес инстанса и запускаем playbook 
+update_java_install_nginx.yml
+Когда плейбук отработал, заходим на инстанс и проверяем:
+java -version
+curl localhost
+И с локальной машины в браузере вбиваем адрес инстанса, смотрим вывод
+
