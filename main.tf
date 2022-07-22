@@ -65,3 +65,19 @@ resource "aws_security_group" "web_ssh" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 }
+
+
+data "template_file" "template" {
+  template = file("hosts_template.tftpl")
+  vars = {
+    ip   =  aws_instance.redhat_server.public_ip
+
+  }
+}
+
+resource "local_file" "myfile" {
+  content = join("", data.template_file.template[*].rendered)
+  filename = "ansible/hosts"
+}
+
+
